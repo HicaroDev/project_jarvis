@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PROJECT_JARVIS — Painel de Acompanhamento</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="dot"></span>
+    <h1>PROJECT_<span class="accent">JARVIS</span></h1>
+  </div>
+  <div class="meta" id="lastUpdated">carregando…</div>
+</header>
+
+<main>
+  <section class="panel status-panel">
+    <h2>Onde estamos</h2>
+    <div class="status-fase" id="statusFase"></div>
+    <p class="status-resumo" id="statusResumo"></p>
+  </section>
+
+  <section class="grid-2">
+    <div class="panel">
+      <h2>Roadmap</h2>
+      <ol class="roadmap" id="roadmap"></ol>
+    </div>
+    <div class="panel">
+      <h2>Componentes &amp; contrato de autoridade</h2>
+      <div id="componentes"></div>
+      <p class="regra-central" id="regraCentral"></p>
+    </div>
+  </section>
+
+  <section class="grid-2">
+    <div class="panel">
+      <h2>Decisões</h2>
+      <table class="decisoes">
+        <thead><tr><th>Data</th><th>Quem</th><th>Decisão</th></tr></thead>
+        <tbody id="decisoes"></tbody>
+      </table>
+    </div>
+    <div class="panel">
+      <h2>Histórico</h2>
+      <div class="historico" id="historico"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Stack / Skills</h2>
+    <div class="skills" id="skills"></div>
+    <p class="doc-link">Documento completo de arquitetura: <a id="docLink" href="#" target="_blank" rel="noopener">abrir</a></p>
+  </section>
+</main>
+
+<footer>
+  Painel estático, alimentado manualmente pelo Claude Code a cada marco de trabalho. Não reflete estado em tempo real dos agentes.
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
