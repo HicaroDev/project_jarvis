@@ -4,11 +4,11 @@
 // Atualizado pelo Claude Code a cada marco relevante de trabalho.
 
 const JARVIS_DATA = {
-  lastUpdated: "2026-11-05T15:05:00-03:00",
+  lastUpdated: "2026-11-05T20:40:00-03:00",
 
   status: {
-    fase: "Fase 0 — Base local + validação do Hermes Agent oficial",
-    resumo: "Jarvis Worker (Acer) construído e testado. Hermes Agent identificado como o framework oficial da Nous Research (não um framework próprio). Teste isolado local (Ollama + provider custom) em andamento.",
+    fase: "Realinhamento — Ollama só no HP + investigação do Claude Code como executor",
+    resumo: "Usuário confirmou: Ollama exclusivamente no HP (RTX 5070), teste no Acer suspenso sem apagar nada. Nova prioridade: avaliar se o Jarvis Worker já construído serve de adaptador entre o Hermes e a execução real do Claude Code — proposta técnica (fluxo + PoC + critérios de aceite) escrita, aguardando aprovação antes de qualquer código novo.",
   },
 
   componentes: [
@@ -22,7 +22,8 @@ const JARVIS_DATA = {
 
   roadmap: [
     { fase: "Fase 0a", titulo: "Jarvis Worker local (sem LLM)", status: "concluido", detalhe: "Fila SQLite + executor allowlist + painel + leitura read-only do Segundo Cérebro. 3 testes passando." },
-    { fase: "Fase 0b", titulo: "LLM local via Ollama", status: "em-andamento", detalhe: "Instalação do Ollama + modelo pequeno (hermes3:3b) no Acer, teste isolado do provider custom do Hermes Agent." },
+    { fase: "Fase 0b", titulo: "LLM local via Ollama", status: "pendente", detalhe: "Suspenso no Acer (2026-11-05) — redirecionado exclusivamente para o HP RTX 5070, autorização separada. Instalador e scripts de teste preservados, nada apagado." },
+    { fase: "Fase Investigação", titulo: "Claude Code como executor especializado", status: "em-andamento", detalhe: "Avaliando se o Jarvis Worker (fila+executor+allowlist já construídos) serve de adaptador entre o Hermes e o `claude -p`. Proposta técnica (fluxo, custo, isolamento, aprovação humana, PoC, critérios de aceite) escrita — aguardando aprovação do usuário antes de código novo." },
     { fase: "Fase 0c", titulo: "Auditoria do Hermes Agent oficial", status: "concluido", detalhe: "Confirmado: provider custom = Ollama local grátis; ollama-cloud/nous = pago; WireGuard já existe na VPS (outro peer); write-guard de perfil é só convenção, não fronteira de segurança." },
     { fase: "Fase 1", titulo: "Proposta de isolamento do Hermes na VPS", status: "pendente", detalhe: "Usuário sem privilégio admin, diretórios restritos, segredos separados — só proposta, sem executar na VPS compartilhada." },
     { fase: "Fase 2", titulo: "Conectar HP via WireGuard", status: "pendente", detalhe: "Segunda etapa, só depois do teste local isolado validar o caminho." },
@@ -40,6 +41,7 @@ const JARVIS_DATA = {
     { data: "2026-11-05", quem: "Hícaro", decisao: "Aprovada arquitetura híbrida (opção C): Hermes como orquestração/mensageria, Jarvis Boost/Worker próprios pra dado pessoal e execução." },
     { data: "2026-11-05", quem: "Hícaro", decisao: "Aprovado teste local isolado (Ollama + provider custom), com a condição de apresentar plano/impacto antes de instalar — depois ampliada pra autonomia total do Claude na execução." },
     { data: "2026-11-05", quem: "Hícaro", decisao: "Criado o repositório project_jarvis (GitHub/Vercel) pra acompanhamento visual do progresso — este painel." },
+    { data: "2026-11-05", quem: "Hícaro", decisao: "Confirmado realinhamento arquitetural: Ollama exclusivamente no HP (teste no Acer suspenso, nada apagado); Hermes é só coordenador (registra/delega), nunca executor irrestrito; nova prioridade é investigar o Jarvis Worker como adaptador entre o Hermes e o Claude Code, evitando criar agente redundante." },
   ],
 
   historico: [
@@ -52,6 +54,8 @@ const JARVIS_DATA = {
     { hora: "14:35", data: "2026-11-05", evento: "Auditoria SSH read-only: confirmado Hermes Agent oficial (Nous Research/Teknium), 40 providers, 22 plataformas, 65 MCPs." },
     { hora: "14:48", data: "2026-11-05", evento: "Auditoria técnica aprofundada: custom=Ollama local grátis; ollama-cloud/nous=pago; WireGuard existe mas não liga o Acer; write-guard não é fronteira de segurança." },
     { hora: "15:05", data: "2026-11-05", evento: "Criado project_jarvis no GitHub — este painel de acompanhamento." },
+    { hora: "20:10", data: "2026-11-05", evento: "Usuário confirmou realinhamento: Ollama só no HP, teste no Acer suspenso (nada apagado), Hermes como coordenador não executor." },
+    { hora: "20:40", data: "2026-11-05", evento: "Avaliação de código concluída: Jarvis Worker é extensível como adaptador do Claude Code (allowlist + fila já genéricas). Proposta técnica (7 pontos + PoC + critérios de aceite) escrita em proposta-claude-code-adapter.md e seção R do doc de arquitetura." },
   ],
 
   skills: [
