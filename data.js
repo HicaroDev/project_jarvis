@@ -4,11 +4,11 @@
 // Atualizado pelo Claude Code a cada marco relevante de trabalho.
 
 const JARVIS_DATA = {
-  lastUpdated: "2026-11-06T10:35:00-03:00",
+  lastUpdated: "2026-11-06T16:45:00-03:00",
 
   status: {
-    fase: "Primeira PoC real concluída — adaptador OpenCode validado de ponta a ponta",
-    resumo: "Usuário autorizou e a PoC real rodou com sucesso: GLM-5.3-Flash Free criou e leu um arquivo de teste no sandbox dedicado. Exit code 0, 18.07s, custo real = 0 (confirmado pelo próprio OpenCode), só as ferramentas write/read foram usadas, nenhum sinal de login/pagamento/permissão disparou o abort-watch implementado sob exigência do usuário. VPS e Obsidian intocados. Limitação de isolamento de sistema (sem restricted token) ficou registrada como risco conhecido e requisito obrigatório antes de qualquer operação autônoma sobre projetos reais — não é uma pendência resolvida, é uma condição explícita pra próxima etapa.",
+    fase: "Validador independente de resultado implementado — 2a PoC apresentada, não executada",
+    resumo: "Depois da 1a PoC real (GLM-5.3-Flash Free, exit_code 0, 18.07s, custo 0), o usuário identificou que exit_code 0 não prova conteúdo correto (o arquivo saiu com um ponto final extra) e exigiu um validador independente do modelo. Implementado: executor separa execução do processo / resultado produzido (relido do disco) / validação contra critério de aceite / aprovação final, com novo estado terminal validation_failed (sem retry automático). 6 testes novos, incluindo um teste retroativo que confirma a divergência da 1a PoC. Durante a implementação, a suíte de testes acidentalmente apagou o artefato físico da 1a PoC ao limpar o sandbox de produção — nenhuma informação foi perdida (conteúdo já documentado), mas o incidente foi registrado com transparência e corrigido isolando o sandbox de teste. Proposta de 2a PoC (dois arquivos de programação fictícios, validados por estrutura + teste unitário) apresentada ao usuário — NÃO executada, aguardando decisão.",
   },
 
   componentes: [
@@ -25,6 +25,7 @@ const JARVIS_DATA = {
     { fase: "Fase 0b", titulo: "LLM local via Ollama", status: "pendente", detalhe: "Suspenso no Acer (2026-11-05) — redirecionado exclusivamente para o HP RTX 5070, autorização separada. Instalador e scripts de teste preservados, nada apagado." },
     { fase: "Fase Investigação", titulo: "Claude Code como executor especializado", status: "em-andamento", detalhe: "Configuração final da PoC definida (--bare, --max-budget-usd, blockWritesOutsideWorkingDirectories) e aprovada em conceito — aguardando o usuário gerar a API key própria e confirmar o gasto real. Adaptador preservado intacto durante a trilha OpenCode." },
     { fase: "Fase OpenCode", titulo: "PoC gratuita via OpenCode (alternativa de menor custo)", status: "concluido", detalhe: "1a execução real concluída com sucesso (GLM-5.3-Flash Free): exit_code 0, 18.07s, custo real 0, só write/read usadas, abort-watch não disparou. Limitação de isolamento de sistema (sem restricted token) registrada como risco conhecido e requisito obrigatório antes de operações autônomas sobre projetos reais — decisão explícita do usuário, não renegociável sem nova autorização." },
+    { fase: "Fase OpenCode — Validação", titulo: "Validador independente de resultado + proposta da 2a PoC", status: "concluido", detalhe: "Executor agora separa execução/resultado/validação/aprovação final (novo estado terminal validation_failed, sem retry). 2a PoC (dois arquivos de programação fictícios) só proposta, não executada." },
     { fase: "Fase 0c", titulo: "Auditoria do Hermes Agent oficial", status: "concluido", detalhe: "Confirmado: provider custom = Ollama local grátis; ollama-cloud/nous = pago; WireGuard já existe na VPS (outro peer); write-guard de perfil é só convenção, não fronteira de segurança." },
     { fase: "Fase 1", titulo: "Proposta de isolamento do Hermes na VPS", status: "pendente", detalhe: "Usuário sem privilégio admin, diretórios restritos, segredos separados — só proposta, sem executar na VPS compartilhada." },
     { fase: "Fase 2", titulo: "Conectar HP via WireGuard", status: "pendente", detalhe: "Segunda etapa, só depois do teste local isolado validar o caminho." },
@@ -48,6 +49,7 @@ const JARVIS_DATA = {
     { data: "2026-11-06", quem: "Hícaro", decisao: "Aprovada PoC alternativa e gratuita via OpenCode (já instalado), preservando o adaptador Claude Code intacto; exigidos testes de segurança (permissão, isolamento de diretório, allowlist de ferramentas) antes de qualquer execução real, mesmo gratuita; rejeitado diretório isolado sozinho como barreira suficiente." },
     { data: "2026-11-06", quem: "Hícaro", decisao: "Aceita a opção A de isolamento (barreiras de aplicação, sem restricted token) só para a PoC trivial atual; limitação registrada como risco conhecido e requisito obrigatório antes de qualquer operação autônoma sobre projetos reais; exigido abort-watch em tempo real (interromper diante de login/pagamento/permissão/troca de provedor) antes da autorização final." },
     { data: "2026-11-06", quem: "Hícaro", decisao: "Autorizada explicitamente a execução real da tarefa d3a8714d-9b36-483c-bbf2-50e00668201f com opencode/glm-5.3-flash-free — autorização restrita a essa tarefa única, não estendida a outras tarefas, instalações ou infraestrutura." },
+    { data: "2026-11-06", quem: "Hícaro", decisao: "Exigido validador independente de resultado após a 1a PoC (exit_code 0 não é prova de conteúdo correto); exigida separação clara entre execução/resultado/validação/aprovação final; autorizada preparação (não execução) de uma 2a PoC com dois arquivos de programação fictícios, mantendo bloqueio de operações em projetos reais até isolamento de SO adequado." },
   ],
 
   historico: [
@@ -69,6 +71,9 @@ const JARVIS_DATA = {
     { hora: "08:30", data: "2026-11-06", evento: "run_opencode_task implementado reaproveitando fila/aprovação/timeout/kill de processos existentes; 11 testes passando, incluindo validação offline real da sintaxe de permissão (opencode debug config, v1.18.31) e teste que confirma ausência de isolamento de sistema operacional sem restricted token." },
     { hora: "09:30", data: "2026-11-06", evento: "Abort-watch em tempo real implementado: thread lê stdout/stderr linha a linha e mata a árvore de processos no instante em que detecta sinal de login/autenticação/pagamento/permissão/troca de provedor, em vez de só verificar depois do processo terminar." },
     { hora: "10:30", data: "2026-11-06", evento: "Primeira execução real do adaptador: GLM-5.3-Flash Free criou e leu poc-opencode.txt no sandbox dedicado. exit_code 0, 18.07s, custo real 0, só write/read usadas, abort-watch não disparou, VPS/Obsidian intocados. Divergência mínima no conteúdo (ponto final extra) registrada com honestidade." },
+    { hora: "16:20", data: "2026-11-06", evento: "Validador independente de resultado implementado (executor.validate_result + novo estado validation_failed): 6 testes novos em tests/test_validation.py, incluindo teste retroativo contra o artefato da 1a PoC real." },
+    { hora: "16:30", data: "2026-11-06", evento: "Incidente: a suíte de testes apagou o artefato físico da 1a PoC (poc-opencode.txt) ao limpar o sandbox de produção via clean_opencode_sandbox(). Nenhuma informação perdida (conteúdo já documentado em §13), mas registrado com transparência; corrigido isolando os testes num sandbox próprio (tests/_sandbox_opencode_tasks_test/), nunca mais tocando sandbox/opencode-tasks/ de produção." },
+    { hora: "16:40", data: "2026-11-06", evento: "Proposta da 2a PoC (dois arquivos de programação fictícios, validados por estrutura + execução de teste unitário) escrita em proposta-opencode-adapter.md §14.5 — apresentada ao usuário, não executada." },
   ],
 
   skills: [
