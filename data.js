@@ -4,11 +4,11 @@
 // Atualizado pelo Claude Code a cada marco relevante de trabalho.
 
 const JARVIS_DATA = {
-  lastUpdated: "2026-11-05T20:40:00-03:00",
+  lastUpdated: "2026-11-06T08:45:00-03:00",
 
   status: {
-    fase: "Realinhamento — Ollama só no HP + investigação do Claude Code como executor",
-    resumo: "Usuário confirmou: Ollama exclusivamente no HP (RTX 5070), teste no Acer suspenso sem apagar nada. Nova prioridade: avaliar se o Jarvis Worker já construído serve de adaptador entre o Hermes e a execução real do Claude Code — proposta técnica (fluxo + PoC + critérios de aceite) escrita, aguardando aprovação antes de qualquer código novo.",
+    fase: "PoC gratuita via OpenCode — testes de segurança feitos, aguardando autorização pra execução real",
+    resumo: "Usuário aprovou seguir a primeira PoC real pelo OpenCode (gratuito, já instalado), preservando o adaptador Claude Code intacto. Adaptador run_opencode_task implementado e testado (11 testes, zero chamada a provedor de modelo). Resultado honesto do teste de isolamento: a config do OpenCode é policy de aplicação, não sandbox de sistema — confirmado que, sem um restricted token dedicado, a conta atual escreve fora do diretório sem obstáculo. Aguardando decisão do usuário sobre isolamento e autorização final pra rodar a única tarefa real (criar+ler um .txt) com GLM-5.3-Flash Free ou Nemotron.",
   },
 
   componentes: [
@@ -23,7 +23,8 @@ const JARVIS_DATA = {
   roadmap: [
     { fase: "Fase 0a", titulo: "Jarvis Worker local (sem LLM)", status: "concluido", detalhe: "Fila SQLite + executor allowlist + painel + leitura read-only do Segundo Cérebro. 3 testes passando." },
     { fase: "Fase 0b", titulo: "LLM local via Ollama", status: "pendente", detalhe: "Suspenso no Acer (2026-11-05) — redirecionado exclusivamente para o HP RTX 5070, autorização separada. Instalador e scripts de teste preservados, nada apagado." },
-    { fase: "Fase Investigação", titulo: "Claude Code como executor especializado", status: "em-andamento", detalhe: "Avaliando se o Jarvis Worker (fila+executor+allowlist já construídos) serve de adaptador entre o Hermes e o `claude -p`. Proposta técnica (fluxo, custo, isolamento, aprovação humana, PoC, critérios de aceite) escrita — aguardando aprovação do usuário antes de código novo." },
+    { fase: "Fase Investigação", titulo: "Claude Code como executor especializado", status: "em-andamento", detalhe: "Configuração final da PoC definida (--bare, --max-budget-usd, blockWritesOutsideWorkingDirectories) e aprovada em conceito — aguardando o usuário gerar a API key própria e confirmar o gasto real. Adaptador preservado intacto durante a trilha OpenCode." },
+    { fase: "Fase OpenCode", titulo: "PoC gratuita via OpenCode (alternativa de menor custo)", status: "em-andamento", detalhe: "run_opencode_task implementado (mesma fila/aprovação/timeout/kill de processos do adaptador Claude Code, reaproveitados). 11 testes passando, incluindo validação real offline da sintaxe de permissão na v1.18.31. Teste dedicado confirmou que o isolamento é só de aplicação, não de sistema operacional — documentado, não resolvido. Aguardando decisão sobre isolamento e autorização final pra 1 execução real." },
     { fase: "Fase 0c", titulo: "Auditoria do Hermes Agent oficial", status: "concluido", detalhe: "Confirmado: provider custom = Ollama local grátis; ollama-cloud/nous = pago; WireGuard já existe na VPS (outro peer); write-guard de perfil é só convenção, não fronteira de segurança." },
     { fase: "Fase 1", titulo: "Proposta de isolamento do Hermes na VPS", status: "pendente", detalhe: "Usuário sem privilégio admin, diretórios restritos, segredos separados — só proposta, sem executar na VPS compartilhada." },
     { fase: "Fase 2", titulo: "Conectar HP via WireGuard", status: "pendente", detalhe: "Segunda etapa, só depois do teste local isolado validar o caminho." },
@@ -42,6 +43,9 @@ const JARVIS_DATA = {
     { data: "2026-11-05", quem: "Hícaro", decisao: "Aprovado teste local isolado (Ollama + provider custom), com a condição de apresentar plano/impacto antes de instalar — depois ampliada pra autonomia total do Claude na execução." },
     { data: "2026-11-05", quem: "Hícaro", decisao: "Criado o repositório project_jarvis (GitHub/Vercel) pra acompanhamento visual do progresso — este painel." },
     { data: "2026-11-05", quem: "Hícaro", decisao: "Confirmado realinhamento arquitetural: Ollama exclusivamente no HP (teste no Acer suspenso, nada apagado); Hermes é só coordenador (registra/delega), nunca executor irrestrito; nova prioridade é investigar o Jarvis Worker como adaptador entre o Hermes e o Claude Code, evitando criar agente redundante." },
+    { data: "2026-11-05", quem: "Hícaro", decisao: "Exigida verificação oficial (não por memória) de 4 cenários de autenticação do Claude Code antes de qualquer gasto; vetado o uso de claude setup-token pro Worker — distinção entre uso pessoal da assinatura e integração em aplicação própria, que exige API key própria." },
+    { data: "2026-11-06", quem: "Hícaro", decisao: "Aprovada 1 execução real de PoC do Claude Code sob 8 condições (Haiku 5.5, API key exclusiva, limite de gasto no Console, --max-budget-usd, sandbox code-enforced, aprovação humana, tarefa única, registro de custo real) — orçamento máximo de US$1,00; API key a ser gerada pelo usuário; execução real aguardando confirmação final dele." },
+    { data: "2026-11-06", quem: "Hícaro", decisao: "Aprovada PoC alternativa e gratuita via OpenCode (já instalado), preservando o adaptador Claude Code intacto; exigidos testes de segurança (permissão, isolamento de diretório, allowlist de ferramentas) antes de qualquer execução real, mesmo gratuita; rejeitado diretório isolado sozinho como barreira suficiente." },
   ],
 
   historico: [
@@ -56,6 +60,11 @@ const JARVIS_DATA = {
     { hora: "15:05", data: "2026-11-05", evento: "Criado project_jarvis no GitHub — este painel de acompanhamento." },
     { hora: "20:10", data: "2026-11-05", evento: "Usuário confirmou realinhamento: Ollama só no HP, teste no Acer suspenso (nada apagado), Hermes como coordenador não executor." },
     { hora: "20:40", data: "2026-11-05", evento: "Avaliação de código concluída: Jarvis Worker é extensível como adaptador do Claude Code (allowlist + fila já genéricas). Proposta técnica (7 pontos + PoC + critérios de aceite) escrita em proposta-claude-code-adapter.md e seção R do doc de arquitetura." },
+    { hora: "06:20", data: "2026-11-06", evento: "run_claude_code_task implementado e testado (9 testes): pending_approval, allowlist de tools, tetos de max_turns/timeout, kill de árvore via psutil, recuperação segura de marker órfão — tudo contra mock, zero chamada real." },
+    { hora: "06:30", data: "2026-11-06", evento: "Verificação oficial (não por memória) dos 4 cenários de auth do Claude Code: --bare nunca lê credencial OAuth, --max-budget-usd pode ser ultrapassado ('spend can pass the cap'), blockWritesOutsideWorkingDirectories é enforcement de código válido desde v2.1.314 (instalada: 2.1.318)." },
+    { hora: "06:35", data: "2026-11-06", evento: "Configuração final da PoC do Claude Code documentada (--bare -p --model claude-haiku-5-5 --allowedTools Write --max-turns 3 --max-budget-usd 0.20) — apresentada ao usuário, aguardando API key própria e confirmação final." },
+    { hora: "08:11", data: "2026-11-06", evento: "Usuário aprovou PoC alternativa gratuita via OpenCode, com testes de segurança obrigatórios antes de qualquer execução real." },
+    { hora: "08:30", data: "2026-11-06", evento: "run_opencode_task implementado reaproveitando fila/aprovação/timeout/kill de processos existentes; 11 testes passando, incluindo validação offline real da sintaxe de permissão (opencode debug config, v1.18.31) e teste que confirma ausência de isolamento de sistema operacional sem restricted token." },
   ],
 
   skills: [
