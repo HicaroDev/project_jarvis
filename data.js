@@ -4,7 +4,7 @@
 // Atualizado pelo Claude Code a cada marco relevante de trabalho.
 
 const JARVIS_DATA = {
-  lastUpdated: "2026-11-08T20:35:00-03:00",
+  lastUpdated: "2026-11-08T21:38:00+01:00",
 
   status: {
     fase: "Jarvis 3.0 — comunicação Hermes ↔ Claudinho resolvida; WireGuard Etapa A pendente de ativação no Acer",
