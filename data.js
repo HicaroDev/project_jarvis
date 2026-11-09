@@ -4,7 +4,7 @@
 // Atualizado pelo Claude Code a cada marco relevante de trabalho.
 
 const JARVIS_DATA = {
-  lastUpdated: "2026-11-09T08:40:00+01:00",
+  lastUpdated: "2026-11-09T10:39:00+01:00",
 
   status: {
     fase: "Jarvis 3.0 — comunicação Hermes ↔ Claudinho estável; WireGuard Etapa A pendente de ativação no Acer; e-mail/WhatsApp/modelo de voz aguardando decisão do usuário",
@@ -106,6 +106,16 @@ const JARVIS_DATA = {
     { hora: "06:50", data: "2026-11-09", evento: "Bloqueada sugestão do Hermes de reaplicar o comando sed com group_allow_from em formato de string com colchetes — é o mesmo bug corrigido em 08/11; re-confirmado via SSH que o config.yaml já está correto (lista YAML, zero bloqueios)." },
     { hora: "07:03", data: "2026-11-09", evento: "Hermes emitiu duas \"confirmações\" de mudança de configuração (medium como modelo de transcrição) a partir da própria conta, sem ser o usuário — identificado pelo user_id do remetente no canal e recusado; nenhuma mudança aplicada." },
     { hora: "07:27", data: "2026-11-09", evento: "Relatório de status enviado ao usuário no grupo \"Bots\" resumindo pendências (ativação do WireGuard, conta de e-mail, tipo de integração WhatsApp, troca do modelo de transcrição de voz) e o padrão de informação desatualizada do Hermes (3x repetida na mesma conversa)." },
+    { hora: "08:05", data: "2026-11-09", evento: "Diagnosticada a causa raiz do contexto travado do Hermes: o arquivo /root/.hermes/relatorio_status_atual.md (de 08/11 19:58) ficou desatualizado e estava sendo citado pelo Hermes como fonte de status, mesmo após um /reset de sessão. Corrigido com confirmação do usuário (backup do original preservado)." },
+    { hora: "10:39", data: "2026-11-09", evento: "Painel ganhou auto-atualização em tela (poll do data.js a cada 30s, sem precisar recarregar) e uma seção de \"Pendências atuais\" — autorizado pelo usuário como melhoria leve, sem backend novo. Testado localmente num servidor estático antes de publicar." },
+  ],
+
+  pendencias: [
+    { item: "Ativar manualmente o túnel WireGuard no Windows (Acer) — Import → Activate → aceitar UAC", desde: "2026-11-08" },
+    { item: "Confirmar conta de e-mail que o Hermes deveria acessar (provedor + usuário)", desde: "2026-11-09" },
+    { item: "Confirmar tipo de integração WhatsApp (API oficial vs. não-oficial)", desde: "2026-11-09" },
+    { item: "Confirmar troca do modelo de transcrição de voz (small → medium)", desde: "2026-11-09" },
+    { item: "Testar voz ponta a ponta com o Hermes (áudio → transcrição → TTS)", desde: "2026-11-08" },
   ],
 
   skills: [

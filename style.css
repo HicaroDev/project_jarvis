@@ -109,6 +109,16 @@ table.decisoes td:first-child { white-space: nowrap; color: var(--text-muted); }
 .historico .item { padding: 8px 0; border-bottom: 1px solid rgba(90,42,18,.4); font-size: 12.5px; }
 .historico .item time { color: var(--gold); margin-right: 8px; font-variant-numeric: tabular-nums; }
 
+.pendencias { list-style: none; margin: 0; padding: 0; }
+.pendencias li {
+  display: flex; justify-content: space-between; gap: 12px;
+  padding: 9px 0; border-bottom: 1px solid rgba(90,42,18,.4);
+  font-size: 12.5px;
+}
+.pendencias li:last-child { border-bottom: none; }
+.pendencias .item-texto { color: var(--text); }
+.pendencias .desde { color: var(--text-muted); white-space: nowrap; font-size: 11px; }
+
 .skills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
 .skills span {
   background: rgba(232,184,75,.1);
