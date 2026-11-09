@@ -4,10 +4,10 @@
 // Atualizado pelo Claude Code a cada marco relevante de trabalho.
 
 const JARVIS_DATA = {
-  lastUpdated: "2026-11-09T10:39:00+01:00",
+  lastUpdated: "2026-11-09T14:15:00+01:00",
 
   status: {
-    fase: "Jarvis 3.0 — comunicação Hermes ↔ Claudinho estável; WireGuard Etapa A pendente de ativação no Acer; e-mail/WhatsApp/modelo de voz aguardando decisão do usuário",
+    fase: "Jarvis 3.0 — Claudinho ganhou voz (edge-tts, voz Antonio confirmada); WireGuard Etapa A ainda pendente de ativação no Acer; e-mail/WhatsApp/STT/LLM-cybersegurança aguardando decisões do usuário",
     resumo: "Nova missão (Jarvis 3.0): integrar o Hermes (VPS) ao Claudinho (Claude Code no Acer) via grupo \"Bots\" no Telegram + API privada de tarefas. Etapa 1 (preparação local) concluída: task_api.py (API isolada, tokens separados Hermes/Acer, claim atômico, idempotência) + vps_bridge.py (ponte sem criar segundo executor) + LEASE_SECONDS 30→150, com 51 testes passando incluindo uma simulação ponta a ponta real. Etapa 2 (VPS) limitada, por decisão do usuário, só ao WireGuard por enquanto — API de tarefas e skill do Hermes continuam não implantadas. No caminho, descobriu-se que o Telegram bloqueia por padrão mensagens de um bot pra outro bot (recurso oficial \"Bot-to-Bot Communication Mode\", habilitado via BotFather) e um bug real no Hermes (chave group_allow_from ausente/com formato errado) que bloqueava o Claudinho mesmo com a whitelist certa — ambos corrigidos e confirmados por log, não só pela palavra do Hermes. WireGuard: peer do Acer já cadastrado na VPS (sem derrubar os peers existentes), mas o túnel do lado do Acer ainda não foi ativado de verdade (instalação como serviço do Windows exige UAC interativo, que não pode ser automatizado) — um primeiro teste de ping \"funcionou\" mas era falso positivo (coincidência de IP, confirmado por captura de pacotes). Na manhã de 09/11, nova auditoria read-only confirmou que o Hermes tem código pra WhatsApp/e-mail mas nenhum dos dois está configurado (sem credenciais); usuário pediu pra ambos começarem a usar essas contas, mas isso exige 2 decisões novas (qual conta de e-mail, WhatsApp oficial vs. não-oficial) ainda não respondidas. Também identificado que o Hermes repetiu informação desatualizada (sugerindo reaplicar o bug já corrigido do group_allow_from) e chegou a emitir \"confirmações\" em nome do usuário sem ser ele — nenhuma das duas foi executada. Relatório técnico completo da sessão de 08/11: https://claude.ai/artifact/1aEg5qLW5LUH42Af6Wipfj",
   },
 
@@ -66,6 +66,9 @@ const JARVIS_DATA = {
     { data: "2026-11-08", quem: "Hícaro", decisao: "Recusada a abertura de group_allow_from para qualquer usuário (curinga \"*\") — mantida a whitelist restrita aos dois IDs atuais, por não trazer benefício prático e aumentar risco futuro." },
     { data: "2026-11-09", quem: "Hícaro", decisao: "Pedido que Hermes e Claudinho comecem a trabalhar: Claudinho auditar skills/permissões do Hermes; Hermes acessar e-mails e grupos de WhatsApp; ambos registrarem tarefas no to-do do projeto (\"Tudu\" = .to-do/tasks.md, já em uso). Acesso a e-mail/WhatsApp ainda não autorizado de fato — faltam 2 decisões específicas (conta de e-mail; WhatsApp API oficial vs. não-oficial)." },
     { data: "2026-11-09", quem: "Claude", decisao: "Recusadas duas tentativas do Hermes de validar ações em nome do usuário dentro do grupo \"Bots\": (1) sugestão de reaplicar o comando sed que causou o bug original do group_allow_from — bloqueado; (2) \"confirmação\" de troca do modelo de transcrição pra \"medium\" vinda da própria conta do Hermes, não do usuário — não executada até confirmação direta de Hícaro." },
+    { data: "2026-11-09", quem: "Hícaro", decisao: "Feedback explícito sobre comunicação via Telegram: reação de emoji sozinha não basta, sempre mandar texto curto variado em até ~30-60s depois de um áudio, tom mais solto/descontraído — memória de sessão atualizada." },
+    { data: "2026-11-09", quem: "Hícaro", decisao: "Oficializado no grupo \"Bots\": transcrição de áudio enviado pelo Hícaro passa a ser feita pelo Claudinho (transcrição local mais confiável nesta sessão); Hermes trabalha a partir do texto já limpo, sem tentar transcrever de novo." },
+    { data: "2026-11-09", quem: "Hícaro", decisao: "Confirmada a voz \"Antonio\" (edge-tts, Azure Neural via Python, mesma família que o Hermes usa) como voz padrão de áudio do Claudinho, depois de testar primeiro a voz nativa do Windows (SAPI, rejeitada por qualidade) e depois o edge-tts. Ainda pendente: se o Hermes também muda pra Antonio ou mantém Francisca." },
   ],
 
   historico: [
@@ -108,13 +111,25 @@ const JARVIS_DATA = {
     { hora: "07:27", data: "2026-11-09", evento: "Relatório de status enviado ao usuário no grupo \"Bots\" resumindo pendências (ativação do WireGuard, conta de e-mail, tipo de integração WhatsApp, troca do modelo de transcrição de voz) e o padrão de informação desatualizada do Hermes (3x repetida na mesma conversa)." },
     { hora: "08:05", data: "2026-11-09", evento: "Diagnosticada a causa raiz do contexto travado do Hermes: o arquivo /root/.hermes/relatorio_status_atual.md (de 08/11 19:58) ficou desatualizado e estava sendo citado pelo Hermes como fonte de status, mesmo após um /reset de sessão. Corrigido com confirmação do usuário (backup do original preservado)." },
     { hora: "10:39", data: "2026-11-09", evento: "Painel ganhou auto-atualização em tela (poll do data.js a cada 30s, sem precisar recarregar) e uma seção de \"Pendências atuais\" — autorizado pelo usuário como melhoria leve, sem backend novo. Testado localmente num servidor estático antes de publicar." },
+    { hora: "13:32", data: "2026-11-09", evento: "Pedido detalhado por áudio: voz \"JARVIS\" padrão pro Hermes + clonagem da própria voz do usuário (via ElevenLabs) pra casos específicos — explicado o que falta pra cada caminho (troca simples de voz Azure vs. conta/API key/amostras de áudio do ElevenLabs)." },
+    { hora: "13:36", data: "2026-11-09", evento: "Roadmap recebido por áudio: acesso do Hermes a 2 e-mails do Hotmail (tags por responsabilidade, categoria separada pro curso de cibersegurança), inclinação por WhatsApp não-oficial (Evolution API) via EasyPanel na VPS sincronizando número da Suíça, inclinação por trocar STT do Hermes pra Groq, e pedido de ambiente/LLM menos filtrada pro curso de cibersegurança — nenhuma dessas ações executada, só discutidas." },
+    { hora: "13:42", data: "2026-11-09", evento: "Usuário deu feedback direto sobre o estilo de resposta no Telegram (reação sozinha não é suficiente, variar frases, tom mais solto) — memória de sessão feedback_telegram_ack_before_long_task.md atualizada." },
+    { hora: "13:44", data: "2026-11-09", evento: "Anunciado oficialmente no grupo \"Bots\": transcrição de áudio do Hícaro fica com o Claudinho; Hermes confirmou e reforçou que nenhuma das 5 pendências (WireGuard, e-mail, WhatsApp, modelo \"medium\", teste de voz) está liberada sem confirmação direta do usuário." },
+    { hora: "14:03", data: "2026-11-09", evento: "Discutida a ideia de abrir o Segundo Cérebro (Obsidian) pro Hermes também ler, em vez de montar um banco SQL novo do zero — proposta de arquitetura concreta ainda pendente de desenho." },
+    { hora: "14:05", data: "2026-11-09", evento: "Primeiro teste de voz do Claudinho: gerado áudio com a voz nativa do Windows (SAPI, \"Microsoft Maria Desktop\") — usuário rejeitou por qualidade ruim." },
+    { hora: "14:12", data: "2026-11-09", evento: "Encontrado edge-tts já instalado no Python do sistema (voz neural Azure, mesma família do Hermes); gerado novo áudio com a voz \"Antonio\" — usuário confirmou como voz padrão do Claudinho." },
   ],
 
   pendencias: [
     { item: "Ativar manualmente o túnel WireGuard no Windows (Acer) — Import → Activate → aceitar UAC", desde: "2026-11-08" },
-    { item: "Confirmar conta de e-mail que o Hermes deveria acessar (provedor + usuário)", desde: "2026-11-09" },
-    { item: "Confirmar tipo de integração WhatsApp (API oficial vs. não-oficial)", desde: "2026-11-09" },
+    { item: "Confirmar os 2 e-mails do Hotmail/Outlook + tipo de autenticação (app password vs. OAuth)", desde: "2026-11-09" },
+    { item: "Confirmar instalação do Evolution API (WhatsApp não-oficial) no EasyPanel da VPS", desde: "2026-11-09" },
     { item: "Confirmar troca do modelo de transcrição de voz (small → medium)", desde: "2026-11-09" },
+    { item: "Confirmar troca do STT do Hermes pra Groq (usuário precisa criar a API key)", desde: "2026-11-09" },
+    { item: "Decidir se a voz do Hermes também muda pra Antonio ou mantém Francisca", desde: "2026-11-09" },
+    { item: "Mais contexto sobre uso de LLM menos filtrada pro curso de cibersegurança (CTF/laboratório/pentest contratado)", desde: "2026-11-09" },
+    { item: "Nome/link do projeto OpenCode (sub-agentes) testado pelo usuário", desde: "2026-11-09" },
+    { item: "Desenhar proposta pra abrir o Segundo Cérebro (Obsidian) pro Hermes ler, em vez de montar banco novo", desde: "2026-11-09" },
     { item: "Testar voz ponta a ponta com o Hermes (áudio → transcrição → TTS)", desde: "2026-11-08" },
   ],
 
@@ -128,6 +143,7 @@ const JARVIS_DATA = {
     "Telegram Bot-to-Bot Communication Mode (comunicação supervisionada entre agentes)",
     "API de tarefas privada (task_api.py) com autenticação e idempotência",
     "WireGuard (rede privada Acer ↔ VPS)",
+    "edge-tts (voz neural Azure via Python — voz do Claudinho)",
   ],
 
   linkDocArquitetura: "https://claude.ai/artifact/8JLfhggWypGNzXHTNxjPNB",
