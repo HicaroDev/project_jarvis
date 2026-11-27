@@ -1,0 +1,161 @@
+{
+  "atualizado": "2026-11-27",
+  "agenda": [
+    {
+      "data": "2026-11-26",
+      "hora": "22:07",
+      "id": "S01",
+      "titulo": "Ferramenta da semana",
+      "imagem": "posts/S01.jpg",
+      "status": "publicado"
+    },
+    {
+      "data": "2026-11-27",
+      "hora": "06:50",
+      "id": "S02",
+      "titulo": "Erro comum de quem começa em programação",
+      "imagem": "posts/S02.jpg",
+      "status": "agendado"
+    },
+    {
+      "data": "2026-11-27",
+      "hora": "10:10",
+      "id": "S03",
+      "titulo": "Enquete: IA vai substituir engenheiro?",
+      "imagem": "posts/S03.jpg",
+      "status": "agendado"
+    },
+    {
+      "data": "2026-11-27",
+      "hora": "13:40",
+      "id": "S04",
+      "titulo": "Bastidor da oficina",
+      "imagem": "posts/S04.jpg",
+      "status": "agendado"
+    },
+    {
+      "data": "2026-11-27",
+      "hora": "16:55",
+      "id": "S05",
+      "titulo": "Frase motivacional com exemplo técnico",
+      "imagem": "posts/S05.jpg",
+      "status": "agendado"
+    },
+    {
+      "data": "2026-11-27",
+      "hora": "17:58",
+      "id": "S06",
+      "titulo": "Você sabia? Modelo BIM 3D",
+      "imagem": "posts/S06.jpg",
+      "status": "agendado"
+    },
+    {
+      "data": "2026-11-27",
+      "hora": "19:43",
+      "id": "S07",
+      "titulo": "Dica de cibersegurança",
+      "imagem": "posts/S07.jpg",
+      "status": "agendado"
+    },
+    {
+      "data": "2026-11-27",
+      "hora": "21:21",
+      "id": "S08",
+      "titulo": "Mito ou verdade: IA sempre acerta",
+      "imagem": "posts/S08.jpg",
+      "status": "agendado"
+    },
+    {
+      "data": "2026-11-28",
+      "hora": "05:17",
+      "id": "S09",
+      "titulo": "Antes e depois de uma planta 3D",
+      "imagem": "posts/S09.jpg",
+      "status": "agendado"
+    },
+    {
+      "data": "2026-11-28",
+      "hora": "06:50",
+      "id": "S10",
+      "titulo": "Pergunta para a audiência",
+      "imagem": "posts/S10.jpg",
+      "status": "agendado"
+    },
+    {
+      "data": "2026-11-28",
+      "hora": "10:10",
+      "id": "S11",
+      "titulo": "Mini tutorial de prompt",
+      "imagem": "posts/S11.jpg",
+      "status": "agendado"
+    },
+    {
+      "data": "2026-11-28",
+      "hora": "13:40",
+      "id": "S12",
+      "titulo": "Frase de impacto sobre construir o futuro",
+      "imagem": "posts/S12.jpg",
+      "status": "agendado"
+    },
+    {
+      "data": "2026-11-28",
+      "hora": "16:55",
+      "id": "S13",
+      "titulo": "Quiz: IA ou foto real?",
+      "imagem": "posts/S13.jpg",
+      "status": "agendado"
+    },
+    {
+      "data": "2026-11-28",
+      "hora": "17:58",
+      "id": "S14",
+      "titulo": "Ferramenta gratuita para revisar projeto",
+      "imagem": "posts/S14.jpg",
+      "status": "agendado"
+    },
+    {
+      "data": "2026-11-28",
+      "hora": "19:43",
+      "id": "S15",
+      "titulo": "Por que a programação mudou",
+      "imagem": "posts/S15.jpg",
+      "status": "agendado"
+    },
+    {
+      "data": "2026-11-28",
+      "hora": "21:21",
+      "id": "S16",
+      "titulo": "Checklist de segurança digital",
+      "imagem": "posts/S16.jpg",
+      "status": "agendado"
+    },
+    {
+      "data": "2026-11-29",
+      "hora": "05:17",
+      "id": "S17",
+      "titulo": "Resposta a uma dúvida da audiência",
+      "imagem": "posts/S17.jpg",
+      "status": "agendado"
+    },
+    {
+      "data": "2026-11-29",
+      "hora": "06:50",
+      "id": "S18",
+      "titulo": "Motivação de segunda-feira",
+      "imagem": "posts/S18.jpg",
+      "status": "agendado"
+    },
+    {
+      "data": "2026-11-29",
+      "hora": "10:10",
+      "id": "S20",
+      "titulo": "Convite para mandar dúvida",
+      "imagem": "posts/S20.jpg",
+      "status": "agendado"
+    }
+  ],
+  "pendentes_sem_imagem": [
+    "S19",
+    "S21"
+  ]
+}

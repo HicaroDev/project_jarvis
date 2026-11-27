@@ -1,102 +1,36 @@
-function fmtDate(iso) {
-  const d = new Date(iso);
-  return d.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
-}
+(async function () {
+  const resp = await fetch('schedule.json');
+  const dados = await resp.json();
+  const agenda = dados.agenda.slice().sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
 
-function clear(el) {
-  while (el.firstChild) el.removeChild(el.firstChild);
-}
+  const porDia = {};
+  for (const item of agenda) (porDia[item.data] ||= []).push(item);
 
-function render(data) {
-  document.getElementById("lastUpdated").textContent =
-    "Atualizado em " + fmtDate(data.lastUpdated);
+  const publicados = agenda.filter(i => i.status === 'publicado').length;
+  const agendados = agenda.filter(i => i.status === 'agendado').length;
+  document.getElementById('resumo').textContent =
+    `${publicados} publicados · ${agendados} agendados · pendentes sem imagem: ${dados.pendentes_sem_imagem.join(', ')} · atualizado em ${dados.atualizado}`;
 
-  document.getElementById("statusFase").textContent = data.status.fase;
-  document.getElementById("statusResumo").textContent = data.status.resumo;
-
-  const roadmapEl = document.getElementById("roadmap");
-  clear(roadmapEl);
-  data.roadmap.forEach((r) => {
-    const li = document.createElement("li");
-    li.className = r.status;
-    li.innerHTML = `<span class="titulo">${r.fase} — ${r.titulo}</span>
-      <span class="tag ${r.status}">${r.status.replace("-", " ")}</span>
-      <span class="detalhe">${r.detalhe}</span>`;
-    roadmapEl.appendChild(li);
-  });
-
-  const compEl = document.getElementById("componentes");
-  clear(compEl);
-  data.componentes.forEach((c) => {
-    const div = document.createElement("div");
-    div.className = "componente";
-    div.innerHTML = `<div class="nome">${c.nome}</div>
-      <div class="papel">${c.papel}</div>
-      <span class="pode">${c.pode}</span>
-      <span class="nao-pode">${c.naoPode}</span>`;
-    compEl.appendChild(div);
-  });
-  document.getElementById("regraCentral").textContent = data.regraCentral;
-
-  const decisoesEl = document.getElementById("decisoes");
-  clear(decisoesEl);
-  [...data.decisoes].reverse().forEach((d) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${d.data}</td><td>${d.quem}</td><td>${d.decisao}</td>`;
-    decisoesEl.appendChild(tr);
-  });
-
-  const histEl = document.getElementById("historico");
-  clear(histEl);
-  [...data.historico].reverse().forEach((h) => {
-    const div = document.createElement("div");
-    div.className = "item";
-    div.innerHTML = `<time>${h.data} ${h.hora}</time>${h.evento}`;
-    histEl.appendChild(div);
-  });
-
-  const pendEl = document.getElementById("pendencias");
-  if (pendEl) {
-    clear(pendEl);
-    (data.pendencias || []).forEach((p) => {
-      const li = document.createElement("li");
-      li.innerHTML = `<span class="item-texto">${p.item}</span><span class="desde">desde ${p.desde}</span>`;
-      pendEl.appendChild(li);
-    });
+  const main = document.getElementById('calendario');
+  for (const dia of Object.keys(porDia)) {
+    const secao = document.createElement('section');
+    secao.className = 'dia';
+    const data = new Date(dia + 'T12:00:00');
+    const titulo = data.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
+    secao.innerHTML = `<h2>${titulo}</h2><div class="grade"></div>`;
+    const grade = secao.querySelector('.grade');
+    for (const item of porDia[dia]) {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="${item.imagem}" alt="${item.titulo}" loading="lazy">
+        <div class="info">
+          <div class="hora">${item.hora}</div>
+          <div class="titulo">${item.id} · ${item.titulo}</div>
+          <span class="badge ${item.status}">${item.status}</span>
+        </div>`;
+      grade.appendChild(card);
+    }
+    main.appendChild(secao);
   }
-
-  const skillsEl = document.getElementById("skills");
-  clear(skillsEl);
-  data.skills.forEach((s) => {
-    const span = document.createElement("span");
-    span.textContent = s;
-    skillsEl.appendChild(span);
-  });
-
-  document.getElementById("docLink").href = data.linkDocArquitetura;
-}
-
-render(JARVIS_DATA);
-
-// Auto-atualização: refaz o fetch de data.js periodicamente e re-renderiza
-// se o conteúdo mudou, sem precisar recarregar a página. Site continua
-// estático (sem backend) — só muda a experiência de quem está olhando.
-const POLL_MS = 30000;
-let lastRaw = null;
-
-async function pollForUpdates() {
-  try {
-    const res = await fetch("data.js?t=" + Date.now(), { cache: "no-store" });
-    if (!res.ok) return;
-    const text = await res.text();
-    if (text === lastRaw) return;
-    lastRaw = text;
-    const data = new Function(text + "\nreturn JARVIS_DATA;")();
-    render(data);
-  } catch (e) {
-    // Falha de rede/parsing não deve quebrar a tela — só tenta de novo no próximo ciclo.
-    console.warn("Falha ao verificar atualização do painel:", e);
-  }
-}
-
-setInterval(pollForUpdates, POLL_MS);
+})();
